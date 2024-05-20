@@ -19,5 +19,17 @@
         "vite": "^5.2.11",
         "vue": "^3.4.27",
         "vue-tsc": "^2.0.19"
+    },
+    "dependencies": {
+        "@unovis/ts": "^1.4.1",
+        "@unovis/vue": "^1.4.1",
+        "@vueuse/core": "^10.9.0",
+        "class-variance-authority": "^0.7.0",
+        "clsx": "^2.1.1",
+        "lucide-vue-next": "^0.378.0",
+        "radix-vue": "^1.8.0",
+        "tailwind-merge": "^2.3.0",
+        "tailwindcss-animate": "^1.0.7",
+        "vue-sonner": "^1.1.2"
     }
 }
