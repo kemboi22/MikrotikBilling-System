@@ -5,6 +5,7 @@ import CreateRouterComponent from "@/Components/Router/CreateRouterComponent.vue
 import {DataResponse, Router} from "@/types";
 import {Button} from "@/components/ui/button";
 import {ref} from "vue";
+import {Badge} from "@/components/ui/badge";
 
 // Props
 defineProps<{
@@ -45,6 +46,7 @@ const openEditModal = (router: Router) => {
                     <TableHead>IP Address</TableHead>
                     <TableHead>Port</TableHead>
                     <TableHead>Username</TableHead>
+                    <TableHead>Status</TableHead>
                     <TableHead class="text-right">
                         Actions
                     </TableHead>
@@ -59,6 +61,10 @@ const openEditModal = (router: Router) => {
                     <TableCell>{{ router.ipAddress }}</TableCell>
                     <TableCell>{{ router.port }}</TableCell>
                     <TableCell>{{ router.username }}</TableCell>
+                    <TableCell><Badge :variant="router.connect ? 'default' : 'destructive'">
+                        {{ router.connect ? "Connected" : "Disconnected" }}
+                    </Badge>
+                    </TableCell>
                     <TableCell class="text-right flex justify-between gap-3">
                         <Button variant="secondary" @click.prevent="openEditModal(router)">Edit</Button>
                         <Button>Show</Button>
