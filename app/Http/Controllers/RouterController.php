@@ -56,7 +56,23 @@ class RouterController extends Controller
      */
     public function update(Request $request, Router $router)
     {
-        //
+        $request->validate([
+            "name" => "required",
+            "ipAddress" => "required",
+            "username" => "required",
+            "password" => "required",
+            "port" => "required",
+        ]);
+        $router->update([
+            "name" => $request->name,
+            "ip_address" => $request->ipAddress,
+            "username" => $request->username,
+            "password" => $request->password,
+            "connect" => true,
+            "port" => $request->port,
+        ]);
+        if ($router) return response()->json(["success" => true, "message" => "Router updated successfully"], 200);
+        return response()->json(["success" => false, "message" => "Failed to update router"], 400);
     }
 
     /**

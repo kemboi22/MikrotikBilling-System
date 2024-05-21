@@ -2,6 +2,7 @@
 import {Button} from '@/components/ui/button'
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -11,23 +12,52 @@ import {
 } from '@/components/ui/dialog'
 import {Input} from '@/components/ui/input'
 import {Label} from '@/components/ui/label'
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import {Router} from "@/types";
 import {useFetch} from "@/Composables/fetch";
 import Loader from "@/Components/Loader.vue";
 
+// Props
+const props = withDefaults(defineProps<{
+    isOpen?: boolean
+    router?: Router | null
+}>(), {
+    isOpen: false,
+    router: null
+})
+
+// Emits
+const emits = defineEmits(['close', 'open'])
+
+// Variables
 const form = ref<Router>(<Router>{})
 const loading = ref<boolean>(false)
+
+// Watchers
+watch(() => props.router, (router) => {
+    if (router) {
+        form.value = router
+    }
+})
+
+// Functions
 const submit = async () => {
-    const {loading: ld, response} = await useFetch(route('routers.store'), 'POST', form.value)
-    loading.value = ld.value
+    if(props.router)
+    {
+        const {loading: ld, response} = await useFetch(route('routers.update', props.router.id), 'PUT', form.value)
+        loading.value = ld.value
+    }else{
+        const {loading: ld, response} = await useFetch(route('routers.store'), 'POST', form.value)
+        loading.value = ld.value
+    }
+    emits('close')
 }
 </script>
 
 <template>
-    <Dialog>
+    <Dialog :open="isOpen">
         <DialogTrigger as-child>
-            <Button>
+            <Button @click.prevent="$emit('open')">
                 Add Router
             </Button>
         </DialogTrigger>
@@ -45,7 +75,8 @@ const submit = async () => {
                 </div>
                 <div class="lg:col-span-6 col-span-full">
                     <Label>IP Address</Label>
-                    <Input type="text" v-model="form.ipAddress" class="" placeholder="192.168.11.1" autocomplete autofocus/>
+                    <Input type="text" v-model="form.ipAddress" class="" placeholder="192.168.11.1" autocomplete
+                           autofocus/>
                 </div>
                 <div class="lg:col-span-6 col-span-full">
                     <Label>Port</Label>
@@ -63,10 +94,15 @@ const submit = async () => {
             <DialogFooter>
                 <Button type="button" @click.prevent="submit">
                     <span v-if="!loading">
-                        Save
+                        {{ props.router ? 'Update' : 'Save'}}
                     </span>
                     <Loader v-else/>
                 </Button>
+                <DialogClose>
+                    <Button variant="destructive" @click.prevent="$emit('close')">
+                        Close
+                    </Button>
+                </DialogClose>
             </DialogFooter>
         </DialogContent>
     </Dialog>
