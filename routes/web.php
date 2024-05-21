@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\RouterController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render("Dashboard/Index");
-});
+
+Route::resource("routers", RouterController::class);
 
 require __DIR__ . '/auth.php';

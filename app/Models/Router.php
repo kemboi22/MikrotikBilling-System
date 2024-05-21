@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Router extends Model
 {
     use HasFactory;
+
+    protected $fillable = ["name", "ip_address", "username", "password", "connect", "port", "protocol", "secret"];
 }

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Router\RouterCollection;
 use App\Models\Router;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class RouterController extends Controller
 {
@@ -12,15 +14,9 @@ class RouterController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return Inertia::render("Router/Index", [
+            "routers" => new RouterCollection(Router::all())
+        ]);
     }
 
     /**
@@ -28,21 +24,27 @@ class RouterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            "name" => "required",
+            "ipAddress" => "required",
+            "username" => "required",
+            "password" => "required",
+        ]);
+        $router = Router::query()->create([
+            "name" => $request->name,
+            "ip_address" => $request->ipAddress,
+            "username" => $request->username,
+            "password" => $request->password,
+            "connect" => $request->connect
+        ]);
+        if ($router) return response()->json(["success" => true, "message" => "Router created successfully"], 201);
+        return response()->json(["success" => false, "message" => "Failed to create router"], 400);
     }
 
     /**
      * Display the specified resource.
      */
     public function show(Router $router)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Router $router)
     {
         //
     }
