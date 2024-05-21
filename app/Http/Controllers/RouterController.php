@@ -29,13 +29,15 @@ class RouterController extends Controller
             "ipAddress" => "required",
             "username" => "required",
             "password" => "required",
+            "port" => "required",
         ]);
         $router = Router::query()->create([
             "name" => $request->name,
             "ip_address" => $request->ipAddress,
             "username" => $request->username,
             "password" => $request->password,
-            "connect" => $request->connect
+            "connect" => true,
+            "port" => $request->port,
         ]);
         if ($router) return response()->json(["success" => true, "message" => "Router created successfully"], 201);
         return response()->json(["success" => false, "message" => "Failed to create router"], 400);

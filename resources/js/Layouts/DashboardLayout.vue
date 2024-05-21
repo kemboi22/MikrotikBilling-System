@@ -27,6 +27,7 @@ import {
 import {Input} from '@/components/ui/input'
 import {Sheet, SheetContent, SheetTrigger} from '@/components/ui/sheet'
 import {Link} from "@inertiajs/vue3";
+import {Toaster} from "vue-sonner";
 
 const routes = [
     { name: 'Routers', icon: Router, href: 'routers.index' },
@@ -127,6 +128,7 @@ const currentRoute = (url: string) => {
                 </DropdownMenu>
             </header>
             <main class="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+                <Toaster position="top-right"/>
                 <slot/>
             </main>
         </div>

@@ -13,8 +13,15 @@ import {Input} from '@/components/ui/input'
 import {Label} from '@/components/ui/label'
 import {ref} from "vue";
 import {Router} from "@/types";
+import {useFetch} from "@/Composables/fetch";
+import Loader from "@/Components/Loader.vue";
 
 const form = ref<Router>(<Router>{})
+const loading = ref<boolean>(false)
+const submit = async () => {
+    const {loading: ld, response} = await useFetch(route('routers.store'), 'POST', form.value)
+    loading.value = ld.value
+}
 </script>
 
 <template>
@@ -54,8 +61,11 @@ const form = ref<Router>(<Router>{})
                 </div>
             </div>
             <DialogFooter>
-                <Button type="submit">
-                    Save
+                <Button type="button" @click.prevent="submit">
+                    <span v-if="!loading">
+                        Save
+                    </span>
+                    <Loader v-else/>
                 </Button>
             </DialogFooter>
         </DialogContent>
